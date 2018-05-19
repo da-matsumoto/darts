@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Marker Animations</title>
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<style>
+#map {
+    width: 400px;
+    height: 300px;
+    margin: 0 auto 150px;
+}
+.wrapper{
+    width: 700px;
+    margin: 0 auto;
+}
+#darts{
+    width: 300px;
+    margin: 0 auto;
+}
+#darts img{
+    width: 50px;
+    margin-left: 130px;
+}
+.animation {
+    height: 60px;
+    width: 60px;
+    animation: rotate 2s;
+    animation-iteration-count: infinite;
+    /* webkit */
+    -webkit-animation: rotate 2s;
+    -webkit-animation-iteration-count: infinite;
+}
+@keyframes rotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); } 
+}
+@-webkit-keyframes rotate {
+     /* webkit */ 
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+}
+@-webkit-keyframes hvr-bob {
+  0% {
+    -webkit-transform: translateY(-10px);
+    transform: translateY(-10px);
+  }
+
+  50% {
+    -webkit-transform: translateY(-1px);
+    transform: translateY(-1px);
+  }
+
+  100% {
+    -webkit-transform: translateY(-10px);
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes hvr-bob {
+  0% {
+    -webkit-transform: translateY(-10px);
+    transform: translateY(-10px);
+  }
+
+  50% {
+    -webkit-transform: translateY(-1px);
+    transform: translateY(-1px);
+  }
+
+  100% {
+    -webkit-transform: translateY(-10px);
+    transform: translateY(-10px);
+  }
+}
+
+@-webkit-keyframes hvr-bob-float {
+  100% {
+    -webkit-transform: translateY(-10px);
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes hvr-bob-float {
+  100% {
+    -webkit-transform: translateY(-10px);
+    transform: translateY(-10px);
+  }
+}
+
+.hvr-bob {
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-animation-name: hvr-bob-float, hvr-bob;
+  animation-name: hvr-bob-float, hvr-bob;
+  -webkit-animation-duration: .3s, 1.5s;
+  animation-duration: .3s, 1.5s;
+  -webkit-animation-delay: 0s, .3s;
+  animation-delay: 0s, .3s;
+  -webkit-animation-timing-function: ease-out, ease-in-out;
+  animation-timing-function: ease-out, ease-in-out;
+  -webkit-animation-iteration-count: 1, infinite;
+  animation-iteration-count: 1, infinite;
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+  -webkit-animation-direction: normal, alternate;
+  animation-direction: normal, alternate;
+}
+</style>
+</head>
+<body>
+    <div class="wrapper">
+        <div id="map" class="animation"></div>
+        <div id="darts">
+        <div  class="hvr-bob">
+        <img src="img/darts.png">
+        </div>
+        </div>
+    </div>
+<script>
+//var test = Math.floor(Math.random() * ( ( 45 + 1 ) - 24 ) ) + 24;
+//alert(test);
+    
+var marker;
+//世界中ver
+//var ido = Math.floor( Math.random() * 89 );
+//var keido = Math.floor( Math.random() * 360 );
+var ido = Math.random() * ( ( 40 + 1 ) - 30 )  + 30;
+var keido = Math.random() * ( ( 145 + 1 ) - 130 )  + 130;
+function initMap() {
+      var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 4,
+      center: {lat: 38, lng: 138}
+      });
+  $("#darts").on("click" ,function(){
+      $("#darts").slideUp(500);
+      $("#map").removeClass("animation");
+      var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 5,
+      center: {lat: ido, lng: keido}
+      });
+      marker = new google.maps.Marker({
+        map: map,
+        draggable: true,
+        animation: google.maps.Animation.DROP,
+        position: {lat: ido, lng: keido},
+        icon: "img/icon.png"
+      });
+  });
+  marker.addListener('click', toggleBounce);
+}
+
+function toggleBounce() {
+  if (marker.getAnimation() !== null) {
+    marker.setAnimation(null);
+  } else {
+    marker.setAnimation(google.maps.Animation.BOUNCE);
+  }
+}
+</script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCxL-gteqivWXEbvmCWnlkGZimtv5XdwC4&signed_in=true&callback=initMap">
+</script>
+</body>
+</html>
